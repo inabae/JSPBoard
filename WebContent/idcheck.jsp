@@ -1,32 +1,34 @@
-<%@page import="java.sql.ResultSet"%>
+
 <%@page import="java.sql.SQLException"%>
+<%@page import="java.sql.ResultSet"%>
 <%@page import="java.sql.PreparedStatement"%>
 <%@page import="java.sql.Connection"%>
 <%@page import="DB.DBManager"%>
+
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8"%>
 <%
+	String id = request.getParameter("id");
+
 	try {
 		DBManager db = DBManager.getInstance();
 		Connection con = db.open();
-
-		// 3. Query 실행 준비
-		String sql = "select id, name from test";
+		String sql = "select id from member where id=?";
 		PreparedStatement stmt = con.prepareStatement(sql);
-
-		// 4. Query 실행
+		stmt.setString(1, id);
 		ResultSet rs = stmt.executeQuery();
-		while (rs.next()) {
-			int id2 = rs.getInt("id");
-			String name = rs.getString("name");
-			out.println(id2 + "  " + name);
+		boolean isOk = false;
+		if (rs.next()) {
+			isOk = true;
 		}
-
+		if (isOk) {
+			out.println("이미 사용중인 아이디 입니다.");
+		} else {
+			out.println("사용 가능한 아이디 입니다.");
+		}
 	} catch (ClassNotFoundException e) {
-		// TODO Auto-generated catch block
 		e.printStackTrace();
 	} catch (SQLException e) {
-		// TODO Auto-generated catch block
 		e.printStackTrace();
 	}
 %>
