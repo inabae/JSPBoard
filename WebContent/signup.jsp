@@ -6,6 +6,8 @@
 		name="name"><br> <input type="submit" value="회원가입">
 </form>
 
+
+
 <script src="http://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script>
 	function move() {
